@@ -30,10 +30,45 @@ shopt -s globstar
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Prompt
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-export PS1
+#=== Prompt ===
+PROMPT_COMMAND='build_ps1'
+_RESET="$(tput sgr0)"
+last_code_as_string()
+{
+  local ret_code="$?" # Must be the first line
+  local ret_str=''
+  local ret_length="${#ret_code}"
+  # Adds spaces so that we get always 3 characters
+  if [ $ret_length -lt 10 ]; then
+    ret_str=" ${ret_code} "
+  elif [ $ret_length -lt 100 ]; then
+    ret_str=" ${ret_code}"
+  else
+    ret_str="${ret_code}"
+  fi
+  # Display a success differently from an error
+  if [ $ret_code -eq 0 ]; then
+    ret_color="$(tput setaf 2)" # Green
+  else
+    ret_color="$(tput setaf 1)" # Red
+  fi
+  # Prompt syntax
+  echo -n "${ret_color}${ret_str}${_RESET}"
+}
+build_ps1()
+{
+  PS1=''
+  # Updates terminal title
+  PS1+='\[\e]0;\w\a\]'
+  # Last command return code
+  PS1+='$(last_code_as_string)'
+  # The user
+  #PS1+='\[\033[01;32m\]\u@\h\[\033[00m\]'
+  # Adds the path
+  PS1+='\[\033[01;34m\]\w\[\033[00m\]'
+  # Displays either $ or # (if root)
+  PS1+='\$ '
+}
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
