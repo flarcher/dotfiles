@@ -116,8 +116,10 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change gaps
-bindsym $mod+minus gaps inner current minus 6
+bindsym $mod+Control+plus gaps inner current minus 6
+#bindsym $mod+Control+Shift+plus gaps outer current minus 6
 bindsym $mod+plus gaps inner current plus 6
+#bindsym $mod+Shift+plus gaps outer current plus 6
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
