@@ -1,0 +1,7 @@
+! Execute the following in order to reload:
+! xrdb -merge ~/.Xresources
+
+! Use a truetype font and size.
+xterm*faceName: Monospace
+xterm*faceSize: 12
+
