@@ -2,64 +2,68 @@
 
 PROMPT_COMMAND='build_ps1'
 
+COLOR_RESET="$(tput sgr0)"
+COLOR_RED="$(tput setaf 1)"
+COLOR_GREEN="$(tput setaf 2)"
+COLOR_PURPLE="$(tput setaf 5)"
+COLOR_YELLOW="$(tput setaf 3)"
+
+# Returns 3 characters
 last_code_prompt()
 {
   local ret_code="${?:-0}" # Must be the first line
-  local ret_str=''
-  local ret_length="${#ret_code}"
   # Adds spaces so that we get always 3 characters
-  if [ $ret_length -lt 2 ]; then
-    ret_str=" ${ret_code} "
-  elif [ $ret_length -lt 3 ]; then
-    ret_str=" ${ret_code}"
-  else
-    ret_str="${ret_code}"
-  fi
-  # Display a success differently from an error
   if [ $ret_code -eq 0 ]; then
-    ret_color="$(tput setaf 2)" # Green
+    echo -n "( ${COLOR_GREEN}-${COLOR_RESET} )"
   else
-    ret_color="$(tput setaf 1)" # Red
+    local ret_str=''
+    if [ $ret_code -lt 10 ]; then
+      ret_str+=" ${ret_code} "
+    elif [ $ret_code -lt 100 ]; then
+      ret_str+="${ret_code} "
+    else
+      ret_str+="${ret_code}"
+    fi
+    # Prompt syntax with red
+    echo -n "(${COLOR_RED}${ret_str}${COLOR_RESET})"
   fi
-  # Prompt syntax
-  echo -n "${ret_color}${ret_str}"
 }
 
 git_prompt() {
   local GitName
   GitName=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')
   if [ -n "$GitName" ]; then
-    local GitBaseColor="$(tput setaf 5)"
+    local GitBaseColor="${COLOR_PURPLE}"
     local GitHash
     GitHash=$(git rev-parse --short HEAD 2>/dev/null || echo '')
 
     # Commit count between local state and origin
     local GitCommitCount
-    local GitStatusColor="$(tput setaf 9)" # Red
+    local GitStatusColor="${COLOR_RED}"
     GitCommitCount=$(git shortlog -s "origin/${GitName}..HEAD" 2>/dev/null)
     if [ "$?" -ne 0 ]; then
       GitCommitCount='x'
+    elif [ -z "${GitCommitCount}" ]; then
+      GitStatusColor="${COLOR_GREEN}"
+      GitCommitCount='-'
     else
-
       GitCommitCount="$(echo -n "${GitCommitCount}" | xargs | cut -d' ' -f1 | head -n1)"
       if [[ "${GitCommitCount}" =~ [0-9]+ ]]; then
         if [ "${GitCommitCount}" -eq 0 ]; then
-          GitStatusColor="$(tput setaf 15)" # White
+          GitStatusColor="${COLOR_GREEN}"
           GitCommitCount='-'
         elif [ "${GitCommitCount}" -gt 0 ]; then
           GitCommitCount="^${GitCommitCount}"
         elif [ "${GitCommitCount}" -lt 0 ]; then
           GitCommitCount="!${GitCommitCount}"
         fi
-      elif [ -z "${GitCommitCount}" ]; then
-        GitCommitCount='-'
       else
         GitCommitCount='?'
       fi
     fi
-    echo -n "${GitBaseColor}[ "
-    echo -n "${GitName} ${GitHash} ${GitStatusColor}${GitCommitCount}"
-    echo -n "${GitBaseColor} ]"
+    echo -n "${GitBaseColor}[ ${GitName} ${GitHash}${COLOR_RESET}"
+    echo -n " ${GitStatusColor}${GitCommitCount}${COLOR_RESET}"
+    echo -n "${GitBaseColor} ]${COLOR_RESET}"
   else
     # Nothing otherwise
     echo -n ' '
@@ -80,7 +84,5 @@ build_ps1()
   # Git info
   PS1+='$(git_prompt)'
   # Displays either $ or # (if root)
-  PS1+='\[\e[1;33m\]\$ '
-  # Reset colors
-  PS1+='\[\e[0m\]'
+  PS1+="${COLOR_YELLOW}> ${COLOR_RESET}"
 }
