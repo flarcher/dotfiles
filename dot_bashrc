@@ -46,3 +46,6 @@ for f in ~/.profile.d/*.sh; do
   . "${f}"
 done
 
+if [ -f ~/.bash_profile ]; then
+  . ~/.bash_profile
+fi
