@@ -60,7 +60,8 @@ floating_modifier $mod
 
 # move tiling windows via drag & drop by left-clicking into the title bar,
 # or left-clicking anywhere into the window while holding the floating modifier.
-tiling_drag modifier titlebar
+# WARNING! Not supported in earlier version
+#tiling_drag modifier titlebar
 
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
@@ -116,9 +117,10 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change gaps
-bindsym $mod+Control+plus gaps inner current minus 6
+# WARNING! Not supported in earlier version
+#bindsym $mod+Control+plus gaps inner current minus 6
 #bindsym $mod+Control+Shift+plus gaps outer current minus 6
-bindsym $mod+plus gaps inner current plus 6
+#bindsym $mod+plus gaps inner current plus 6
 #bindsym $mod+Shift+plus gaps outer current plus 6
 
 # change container layout (stacked, tabbed, toggle split)
@@ -231,9 +233,10 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Gaps
-gaps inner 5
-gaps outer 0
-smart_gaps on
+# WARNING! Not supported in earlier version
+#gaps inner 5
+#gaps outer 0
+#smart_gaps on
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
