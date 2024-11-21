@@ -2,11 +2,11 @@
 
 PROMPT_COMMAND='build_ps1'
 
-COLOR_RESET="$(tput sgr0)"
-COLOR_RED="$(tput setaf 1)"
-COLOR_GREEN="$(tput setaf 2)"
-COLOR_PURPLE="$(tput setaf 5)"
-COLOR_YELLOW="$(tput setaf 3)"
+COLOR_RESET="\[\e[0m\]"
+COLOR_RED="\[\e[31m\]"
+COLOR_GREEN="\[\e[32m\]"
+COLOR_PURPLE="\[\e[95m\]"
+COLOR_YELLOW="\[\e[33m\]"
 
 # Returns 3 characters
 last_code_prompt()
@@ -74,15 +74,17 @@ build_ps1()
 {
   PS1=''
   # Updates terminal title
-  PS1+='\[\e]0;\w\a\]'
+  PS1+="\[\e]0;\w\a\]"
   # Last command return code
-  PS1+='$(last_code_prompt)'
+  PS1+="$(last_code_prompt)"
   # The user+host
-  #PS1+='\[\033[01;32m\]\u@\h'
+  #PS1+='\[\e[01;32m\]\u@\h'
+  # Time
+  PS1+=" ${COLOR_YELLOW}\t${COLOR_RESET}"
   # Adds the path
-  PS1+=' \[\033[01;34m\]\w'
+  PS1+=" \[\e[1;34m\]\w"
   # Git info
-  PS1+='$(git_prompt)'
+  PS1+="$(git_prompt)"
   # Displays either $ or # (if root)
   PS1+="${COLOR_YELLOW}> ${COLOR_RESET}"
 }
