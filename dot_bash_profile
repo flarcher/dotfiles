@@ -1,0 +1,3 @@
+# This file is present in order to load ~/.bashrc for login shells
+. $HOME/.bashrc
+

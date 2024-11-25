@@ -12,3 +12,9 @@ sourceDir = "$SRC_PARENT_DIR/dotfiles"
 workingTree = "$SRC_PARENT_DIR/dotfiles"
 ```
 
+## Customization of startup script
+
+Any file located in `~/.profile.d/` will be loaded automatically (from the `~/.bashrc` script).
+
+When starting a _login shell_, it will load `~/.bashrc` (as for _non-login shells_).
+
