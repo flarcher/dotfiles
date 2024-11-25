@@ -74,17 +74,17 @@ build_ps1()
 {
   PS1=''
   # Updates terminal title
-  PS1+="\[\e]0;\w\a\]"
+  PS1+="\[\e]0;\W\a\]"
   # Last command return code
   PS1+="$(last_code_prompt)"
   # The user+host
   #PS1+='\[\e[01;32m\]\u@\h'
   # Time
-  PS1+=" ${COLOR_YELLOW}\t${COLOR_RESET}"
+  #PS1+=" ${COLOR_YELLOW}\t${COLOR_RESET}"
   # Adds the path
-  PS1+=" \[\e[1;34m\]\w"
+  PS1+=" \[\e[1;34m\]\W"
   # Git info
   PS1+="$(git_prompt)"
   # Displays either $ or # (if root)
-  PS1+="${COLOR_YELLOW}> ${COLOR_RESET}"
+  PS1+="${COLOR_YELLOW}\$ ${COLOR_RESET}"
 }
