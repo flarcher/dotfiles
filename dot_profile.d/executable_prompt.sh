@@ -11,7 +11,7 @@ COLOR_YELLOW="\[\e[33m\]"
 # Returns 3 characters
 last_code_prompt()
 {
-  local ret_code="${?:-0}" # Must be the first line
+  local ret_code="${1:-0}"
   # Adds spaces so that we get always 3 characters
   if [ $ret_code -eq 0 ]; then
     echo -n "( ${COLOR_GREEN}-${COLOR_RESET} )"
@@ -72,11 +72,12 @@ git_prompt() {
 
 build_ps1()
 {
+  local ret_code="${?:-0}" # Must be the first line
   PS1=''
   # Updates terminal title
   PS1+="\[\e]0;\W\a\]"
   # Last command return code
-  PS1+="$(last_code_prompt)"
+  PS1+="$(last_code_prompt "$ret_code")"
   # The user+host
   #PS1+='\[\e[01;32m\]\u@\h'
   # Time
