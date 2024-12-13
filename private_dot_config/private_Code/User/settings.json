@@ -2,5 +2,7 @@
     "window.menuBarVisibility": "toggle",
     "security.workspace.trust.untrustedFiles": "open",
     "editor.mouseWheelZoom": true,
-    "terminal.integrated.mouseWheelZoom": true
+    "terminal.integrated.mouseWheelZoom": true,
+    "editor.renderWhitespace": "all",
+    "editor.tabSize": 2
 }
