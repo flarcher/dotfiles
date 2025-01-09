@@ -1,0 +1,12 @@
+
+plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"
+
+provider_installation {
+  filesystem_mirror {
+    path    = "$HOME/.terraform.d/providers"
+    include = [ "*/*/*" ]
+  }
+  direct {
+  }
+}
+
