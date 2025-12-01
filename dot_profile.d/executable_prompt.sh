@@ -7,6 +7,7 @@ COLOR_RED="\[\e[31m\]"
 COLOR_GREEN="\[\e[32m\]"
 COLOR_PURPLE="\[\e[95m\]"
 COLOR_YELLOW="\[\e[33m\]"
+COLOR_BLUE="\[\e[1;34m\]"
 
 # Returns 3 characters
 last_code_prompt()
@@ -29,6 +30,7 @@ last_code_prompt()
   fi
 }
 
+# Returns a string with Git related information (when in a Git repository folder)
 git_prompt() {
   local GitName
   GitName=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')
@@ -70,6 +72,7 @@ git_prompt() {
   fi
 }
 
+# Prompt function
 build_ps1()
 {
   local ret_code="${?:-0}" # Must be the first line
@@ -83,9 +86,10 @@ build_ps1()
   # Time
   #PS1+=" ${COLOR_YELLOW}\t${COLOR_RESET}"
   # Adds the path
-  PS1+=" \[\e[1;34m\]\W"
+  PS1+=" ${COLOR_BLUE}\W${COLOR_RESET}"
   # Git info
   PS1+="$(git_prompt)"
   # Displays either $ or # (if root)
-  PS1+="${COLOR_YELLOW}\$ ${COLOR_RESET}"
+  # (The line break solves command display issues)
+  PS1+="\n${COLOR_YELLOW}\$ ${COLOR_RESET}"
 }
